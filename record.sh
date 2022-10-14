@@ -21,7 +21,7 @@ date=$(which gdate)
 [ ! -f "$saveCurrentStream" ] && error "Couldn't find script \"$saveCurrentStream\""
 
 
-if [ $# -ge 1 ]
+if [ $# -ge 2 ]
 then
 	[[ -n "$(which caffeinate)" ]] && caffeinate -imsw $$ &  # Prevents computer from sleeping while script is running, if caffeinate is installed (macOS/BSD)
 
@@ -42,19 +42,19 @@ then
 	echo -e "\n" 1>&2
 	
 	# start recording
-	if [ $# -ge 2 ]
-	then $saveCurrentStream "$OUTPUT_DIR" "$2"
-	else $saveCurrentStream "$OUTPUT_DIR"
+	if [ $# -ge 3 ]
+	then $saveCurrentStream "$OUTPUT_DIR" "$2" "$3"
+	else $saveCurrentStream "$OUTPUT_DIR" "$2"
 	fi
 else
 	CMD="$(basename "$0")"
-	echo "Usage:     $CMD {time/date} [file name]"
+	echo "Usage:     $CMD {time/date} [file name] {TUM Live URL}"
 	echo ""
-	echo "Examples:  $CMD now"
-	echo "           $CMD 13:15"
-	echo "           $CMD \"tomorrow 08:15\""
-	echo "           $CMD \"wed 08:15\""
+	echo "Examples:  $CMD now https://live.rbg.tum.de/w/set/21876"
+	echo "           $CMD 13:15 https://live.rbg.tum.de/w/set/21876"
+	echo "           $CMD \"tomorrow 08:15\" https://live.rbg.tum.de/w/set/21876"
+	echo "           $CMD \"wed 08:15\" https://live.rbg.tum.de/w/set/21876"
 	echo ""
-	echo "           $CMD 08:15 LA"
+	echo "           $CMD 08:15 LA https://live.rbg.tum.de/w/set/21876"
 	exit 1
 fi

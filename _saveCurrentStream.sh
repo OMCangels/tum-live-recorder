@@ -1,8 +1,8 @@
 #!/bin/bash
 # by Max-Joseph Krempl (krempl@in.tum.de)
+# changed by Sebastian Steiner
 
 
-URL_REGEX="https://live\.rbg\.tum\.de/cgi-bin/streams/MW.001.*/COMB"  # MW0001/MW2001 - Präsentation & Kamera
 TIMEOUT="03:00:00"  # Maximum recording length
 
 
@@ -17,19 +17,22 @@ error() {
 [ ! -f "$getStreamURL" ] && error "Couldn't find \"$getStreamURL\""
 
 
-if [ $# -ge 1 ]
+if [ $# -ge 2 ]
 then
-	# extract stream url
-	URL_LIST=$(curl -s "https://live.rbg.tum.de/cgi-bin/streams" | grep "$URL_REGEX" | sed "s|.*\(http.*\)\".*|\1|g") && \
-	URL_TIMESTAMP=$(echo "$URL_LIST" | rev | cut -d'/' -f2 | cut -c-12 | rev | sort -r | head -n1)  # Get most recent timestamp from the last 12 chars of the second to last path component
-	URL=$(echo "$URL_LIST" | grep "$URL_TIMESTAMP")
-	
-	STREAM_URL=$($getStreamURL "$URL")
-	[[ "$STREAM_URL" = "" ]] && error "No stream url found. ($URL_REGEX)\nStream currently not live?"
+	# get url from cli
+	if [ $# -ge 3 ]
+	then
+		URL="$3"
+	else
+		URL="$2"
+	fi
+	STREAM_URL=$($getStreamURL $URL)
+
+	[[ "$STREAM_URL" = "" ]] && error "No stream url found. ($URL, $3)\nStream currently not live?"
 	[[ ! "$STREAM_URL" =~ https.*\.m3u8 ]] && error "Invalid stream url \"$STREAM_URL\""
 	
 	# determine output file (avoid overwrite)
-	if [ $# -ge 2 ]
+	if [ $# -ge 3 ]
 	then NAME="$2"
 	else NAME="$(date +%Y-%m-%d)"
 	fi
