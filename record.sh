@@ -61,14 +61,15 @@ STREAM_URL=""
 if [ $# -eq 2 ]; then
   # time + TUM Live URL --> use curl to get stream url
   STREAM_URL=$($getStreamURL "$2")
-  [[ "$STREAM_URL" = "" ]] && error "No stream url found. ($URL)\nStream currently not live? Or login required to
-  	access course?"
+  [[ "$STREAM_URL" = "" ]] && error "No stream url found. ($2)
+  Stream currently not live? Or login required to	access course?"
 
 elif [ $# -eq 3 ] && [ "$2" != "True" ]; then
   # time + file name + TUM Live URL --> use curl to get stream url
   FILE_NAME="$2"
   STREAM_URL=$($getStreamURL "$3")
-  [[ "$STREAM_URL" = "" ]] && error "No stream url found. ($URL)\nStream currently not live? Or login required to access course?"
+  [[ "$STREAM_URL" = "" ]] && error "No stream url found. ($3)
+  Stream currently not live? Or login required to access course?"
 
 elif [ $# -eq 3 ] && [ "$2" = "True" ]; then
   # time + "True" + HLS URL given in 3rd arg, no curl needed
