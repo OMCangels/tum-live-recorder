@@ -1,6 +1,8 @@
 # tum-live-recorder
-Mit diesen Bash-Skripten kann der aktuell laufende Livestream aus den MW0001/MW2001 Hörsälen von live.rbg.tum.de lokal aufgezeichnet werden.    
-Für andere Hörsäle und/oder Perspektiven kann das `URL_REGEX` in _\_saveCurrentStream.sh_ abgeändert werden.
+Mit diesen Bash-Skripten kann ein Livestream von live.rbg.tum.de lokal aufgezeichnet werden.
+Zur Auswahl des Livestreams wird die URL von live.rbg.tum.de oder direkt die Stream-URL mitgegeben.
+Mit der Stream-URL können auch nicht-Öffentliche Streams aufgezeichnet werden, die TUM Live URL scheitert hier an einem
+Anmeldefenster.
 
 
 # VORAUSSETZUNGEN:
@@ -9,42 +11,47 @@ Für andere Hörsäle und/oder Perspektiven kann das `URL_REGEX` in _\_saveCurre
   - Linux:               `$ sudo apt install ffmpeg` bzw. `$ brew install ffmpeg`
 - NUR macOS: _gdate_ (GNU date) muss installiert sein (nur notwendig für _record.sh_ Skript)
   - mit Homebrew:        `$ brew install coreutils`
-(für macOS-User, die noch kein Homebrew installiert haben —> https://brew.sh)
+    (für macOS-User, die noch kein Homebrew installiert haben —> https://brew.sh)
 
-Eventuell müssen die Skripte noch ausführbar gemacht werden, indem in den Ordner (in der diese Datei liegt) navigiert und `$ chmod +x *.sh` ausgeführt wird.
-
+Eventuell müssen die Skripte noch ausführbar gemacht werden, indem in den Ordner (in der diese Datei liegt) navigiert
+und `$ chmod +x *.sh` ausgeführt wird.
 
 # BEISPIELE:
-- `$ ./record.sh now`    
-  Startet die Aufnahme sofort und speichert die Datei unter _./saved/YYYY-MM-DD.mp4_
 
-- `$ ./record.sh "tomorrow 08:30"`    
-  Wartet bis zum nächsten Tag um 08:30 Uhr und startet dann die Aufnahme
+- TUM Live URL (z.B. https://live.rbg.tum.de/w/set/21866)
+  - `$ ./record.sh now https://live.rbg.tum.de/w/set/21876`    
+    Startet die Aufnahme sofort und speichert die Datei unter _./saved/YYYY-MM-DD.mp4_
 
-- `$ ./record.sh 13:30`    
-  Wartet bis um 13:30 Uhr (am selben Tag) und startet dann die Aufnahme
+  - `$ ./record.sh "tomorrow 08:30 https://live.rbg.tum.de/w/set/21876"`    
+    Wartet bis zum nächsten Tag um 08:30 Uhr und startet dann die Aufnahme
 
-- `$ ./record.sh "wed 8:15"`    
-  Wartet bis zum nächsten Mittwoch um 08:30 Uhr und startet dann die Aufnahme
+  - `$ ./record.sh 13:30 https://live.rbg.tum.de/w/set/21876`    
+    Wartet bis um 13:30 Uhr (am selben Tag) und startet dann die Aufnahme
 
-- `$ ./record.sh 10min LA`    
-  Wartet 10 Minuten, startet dann die Aufnahme und speichert die Datei unter _./saved/LA.mp4_ (oder _./saved/LA_2.mp4_ falls die Datei schon existiert)
+  - `$ ./record.sh "wed 8:15 https://live.rbg.tum.de/w/set/21876"`    
+    Wartet bis zum nächsten Mittwoch um 08:30 Uhr und startet dann die Aufnahme
 
+  - `$ ./record.sh 10min LA https://live.rbg.tum.de/w/set/21876`    
+    Wartet 10 Minuten, startet dann die Aufnahme und speichert die Datei unter _./saved/LA.mp4_ (oder _./saved/LA_2.
+    mp4_ falls die Datei schon existiert)
+
+- LRZ Stream-URL (z.B. https://stream.lrz.de/vod/_definst_/mp4:tum/RBG/set_2022_10_13_11_00COMB.mp4/playlist.m3u8)
+  - `$ ./record.sh now test https://stream.lrz.de/vod/_definst_/mp4:tum/RBG/set_2022_10_13_11_00COMB.mp4/playlist.
+    m3u8`    
+    Startet die Aufnahme sofort und speichert die Datei unter _./test.mp4_
 
 Der Ausgabe-Ordner ist standardmäßig _./saved_, dieser kann aber über `OUTPUT_DIR` in _record.sh_ angepasst werden.
 
-Die Aufnahme stoppt automatisch, wenn der Stream beendet wird oder nach spätestens 3 Stunden (konfigurierbar in _\_saveCurrentStream.sh_).
-Um die Aufnahme manuell zu beenden, einfach mit `CTRL-C` einen Interrupt schicken.   
-**ACHTUNG**: nur _EINMAL_ (nicht mehrfach!) `CTRL-C` drücken und warten bis _ffmpeg_ sich beendet! Andernfalls kann der Header der MP4-Datei beschädigt und die Datei damit nicht abgespielt werden!
+Die Aufnahme stoppt automatisch, wenn der Stream beendet wird oder nach spätestens 3 Stunden (konfigurierbar in _
+\_saveCurrentStream.sh_).
+Um die Aufnahme manuell zu beenden, einfach mit `CTRL-C` **einen** Interrupt schicken.   
+**ACHTUNG**: nur _EINMAL_ (nicht mehrfach!) `CTRL-C` drücken und warten bis _ffmpeg_ sich beendet! Andernfalls kann der
+Header der MP4-Datei beschädigt und die Datei damit nicht abgespielt werden!
 
-Unter macOS geht der Computer zudem nicht in den Ruhezustand während das Skript läuft (Bildschirmruhezustand wird nicht beeinflusst).
+Unter macOS geht der Computer zudem nicht in den Ruhezustand während das Skript läuft (Bildschirmruhezustand wird nicht
+beeinflusst).
 
-
-Wer den tum-live-recorder in einem eigenen Skript/Programm einbauen will oder das Planen von Aufzeichnungen lieber [Cron](https://de.wikipedia.org/wiki/Cron) überlassen will, kann dies einfach mit Hilfe des _\_saveCurrentStream.sh_ Skriptes machen.
-
-
-
-# tum-live-recorder (english)
+# tum-live-recorder (english) \*\*OUTDATED**
 These Bash-Skripts may be used to record the currently available livestreams of MW0001/MW2001 at live.rbg.tum.de locally.
 To record different rooms or video feeds the property `URL_REGEX` in _\_saveCurrentStream.sh_ may be changed.
 
