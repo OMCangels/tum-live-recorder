@@ -28,7 +28,7 @@ then
 	fi
 	STREAM_URL=$($getStreamURL $URL)
 
-	[[ "$STREAM_URL" = "" ]] && error "No stream url found. ($URL, $3)\nStream currently not live?"
+	[[ "$STREAM_URL" = "" ]] && error "No stream url found. ($URL)\nStream currently not live?"
 	[[ ! "$STREAM_URL" =~ https.*\.m3u8 ]] && error "Invalid stream url \"$STREAM_URL\""
 	
 	# determine output file (avoid overwrite)
